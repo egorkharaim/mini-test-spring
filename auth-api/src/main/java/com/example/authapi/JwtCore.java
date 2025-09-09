@@ -20,7 +20,7 @@ public class JwtCore {
     private long lifetime;
 
     private Key key() {
-        // ключ должен быть >= 32 байт для HS256
+
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 

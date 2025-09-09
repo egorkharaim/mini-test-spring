@@ -35,7 +35,7 @@ public class ProcessController {
 
     @PostMapping("/process")
     public TransformResponse process(@RequestBody ProcessRequest req, Authentication auth) {
-        // кто вызвал
+
         String email = auth.getName();
         var user = userRepository.findByEmail(email).orElseThrow();
 
@@ -52,7 +52,7 @@ public class ProcessController {
         TransformResponse body = resp.getBody();
         if (body == null) throw new RuntimeException("Empty response from data-api");
 
-        // сохраняем лог
+
         ProcessingLog log = new ProcessingLog();
         log.setUser(user);
         log.setInputText(req.text());

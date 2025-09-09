@@ -7,11 +7,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-    private Long id;
+    private UUID id;
     private String email;
     private String password;
 
@@ -25,17 +26,18 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(); // пока без ролей
+        return List.of();
     }
 
     @Override
     public String getPassword() {
-        return password; // возвращаем реальный hash
+        System.out.println(">> getPassword(): " + password);
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return email; // Spring будет использовать email как username
+        return email;
     }
 
     @Override

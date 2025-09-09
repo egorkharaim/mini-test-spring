@@ -7,25 +7,30 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
+import java.util.UUID;
 
-    @Entity
-    @Table(name = "processing_log")
-    @Getter @Setter
-    public class ProcessingLog {
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+@Entity
+@Table(name = "processing_log")
+@Getter
+@Setter
+public class ProcessingLog {
 
-        @ManyToOne(optional = false)              // связь с пользователем
-        @JoinColumn(name = "user_id")
-        private User user;
+    @Id
+    @GeneratedValue
+    private UUID id;
 
-        @Column(name = "input_text", nullable = false)
-        private String inputText;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-        @Column(name = "output_text", nullable = false)
-        private String outputText;
+    @Column(name = "input_text", nullable = false)
+    private String inputText;
 
-        @CreationTimestamp
-        @Column(name = "created_at", nullable = false, updatable = false)
-        private Instant createdAt;
+    @Column(name = "output_text", nullable = false)
+    private String outputText;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Instant createdAt;
 }
+

@@ -11,22 +11,25 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
+
+@Component
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtCore jwtCore;
     private final UserDetailsService userDetailsService;
-
 
     public JwtFilter(UserDetailsService userDetailsService, JwtCore jwtCore) {
         this.userDetailsService = userDetailsService;
         this.jwtCore = jwtCore;
     }
+
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-String path = request.getRequestURI();
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) return true;
-        return path.startsWith("/api/auth/");
+        String path = request.getServletPath(); // всегда без домена
+        return path.startsWith("/api/auth");
     }
+
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -42,7 +45,6 @@ String path = request.getRequestURI();
             if (jwtCore.validate(token)) {
                 String username = jwtCore.extractUsername(token);
 
-                // если ещё не аутентифицирован
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     var userDetails = userDetailsService.loadUserByUsername(username);
 
@@ -59,8 +61,4 @@ String path = request.getRequestURI();
 
         filterChain.doFilter(request, response);
     }
-
 }
-
-
-
