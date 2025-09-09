@@ -2,6 +2,7 @@ package com.example.authapi;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -9,11 +10,12 @@ import lombok.Data;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id;
 
     @Column(nullable = false, unique = true)
     private String email;
+
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 }
