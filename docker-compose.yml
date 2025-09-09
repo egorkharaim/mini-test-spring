@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - app-net
+
+  auth-api:
+    build: ./auth-api
+    container_name: auth-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
+      JWT_SECRET: MySuperMegaSecretKeyThatIsLongEnough123456789!!!
+      JWT_LIFETIME: 3600000
+      DATA_API_URL: http://data-api:8081
+      INTERNAL_TOKEN: secret123
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - data-api
+    networks:
+      - app-net
+
+  data-api:
+    build: ./data-api
+    container_name: data-api
+    environment:
+      INTERNAL_TOKEN: secret123
+    ports:
+      - "8081:8081"
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
