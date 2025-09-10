@@ -7,7 +7,7 @@
 ---
 
 ## 🚀 Стек
-- Java 21
+- Java 17
 - Spring Boot 3
 - Spring Security (JWT)
 - PostgreSQL
@@ -81,3 +81,4 @@ input_text (входная строка)
 output_text (результат трансформации)
 
 created_at (время запроса)
+
