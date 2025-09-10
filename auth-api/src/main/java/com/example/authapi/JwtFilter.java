@@ -23,12 +23,12 @@ public class JwtFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
         this.jwtCore = jwtCore;
     }
-
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getServletPath(); // всегда без домена
-        return path.startsWith("/api/auth");
+        String path = request.getRequestURI();
+        return path.startsWith("/api/auth/")|| path.equals("/error");
     }
+
 
     @Override
     protected void doFilterInternal(
